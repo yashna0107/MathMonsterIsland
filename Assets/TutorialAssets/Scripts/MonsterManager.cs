@@ -7,6 +7,7 @@ public class MonsterManager : MonoBehaviour
     [SerializeField] private int amountOfMonsters=10;
     [SerializeField] Transform monsterSpawnPoint;
     [SerializeField] private GameObject[]  monsterPrefabs;
+    [SerializeField] private float waveDifficulty = 0; //determines the difficulty
 
     public List<GameObject> monsters;
 
@@ -20,6 +21,18 @@ public class MonsterManager : MonoBehaviour
            GameObject monster = Instantiate(monsterPrefabs[monsterIndex],monsterSpawnPoint.position, monsterSpawnPoint.rotation);
             monsters.Add(monster);
          }
+
+        CalculateDifficulty(ref waveDifficulty);
+    }
+
+    //ref can be useful if dealing with large collections while copying them into memory. ref allows to reference the memory and not copy.
+    void CalculateDifficulty(ref float difficulty)
+    {
+        foreach (GameObject monster in monsters)
+        {
+            difficulty += monster.GetComponent<Points>().points;
+        }
+        difficulty /= (amountOfMonsters * 3);
     }
 
     // Update is called once per frame

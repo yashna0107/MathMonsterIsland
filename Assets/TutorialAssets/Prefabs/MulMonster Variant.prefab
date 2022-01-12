@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7772138424298230854, guid: 33d500cd999aa164caf34551fc47935a, type: 3}
+      propertyPath: points
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1949332801673539204, guid: 33d500cd999aa164caf34551fc47935a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -53,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1949332801673539206, guid: 33d500cd999aa164caf34551fc47935a, type: 3}
       propertyPath: m_Name
-      value: MulMonster
+      value: MulMonster Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33d500cd999aa164caf34551fc47935a, type: 3}
