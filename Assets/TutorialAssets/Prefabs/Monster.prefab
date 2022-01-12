@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1949332801673539204}
   - component: {fileID: 1949332801673539205}
   - component: {fileID: 1949332801673539203}
+  - component: {fileID: -7772138424298230854}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -69,3 +70,16 @@ MonoBehaviour:
   _state: 0
   _findNewPositionEvery: 3
   _maxMoveDistance: 10
+--- !u!114 &-7772138424298230854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949332801673539206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb199f9aa9472d747b61ad0703d939e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: 0
