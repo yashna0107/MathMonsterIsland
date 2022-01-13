@@ -5,15 +5,14 @@ using Random = UnityEngine.Random;
 
 namespace TutorialAssets.Scripts
 {
+    public enum MonsterState
+    {
+        Wander = 0,
+        Queue = 1,
+        Attack = 2,
+    }
     public class MonsterController : MonoBehaviour
     {
-        public enum MonsterState
-        {
-            Wander = 0,
-            Queue = 1,
-            Attack = 2,
-        }
-
         [SerializeField] private MonsterState _state;
         [SerializeField] private float _findNewPositionEvery = 2f;
         [SerializeField] private float _maxMoveDistance = 10f;
@@ -22,7 +21,7 @@ namespace TutorialAssets.Scripts
         private NavMeshAgent _agent;
         
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             
@@ -55,6 +54,19 @@ namespace TutorialAssets.Scripts
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void ChangeState(MonsterState state)
+        {
+            if (state == MonsterState.Wander)
+            {
+                _agent.enabled = true;
+            }
+            else
+            {
+                _agent.enabled = false;
+            }
+            _state = state;
         }
 
         void FindNewWanderPosition()

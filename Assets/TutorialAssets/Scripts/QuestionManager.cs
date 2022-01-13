@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class QuestionManager : MonoBehaviour
 {
+    [SerializeField] MonsterManager monsterManager;
    [SerializeField] private TMP_Text messageBoxTextField;
     [SerializeField] TMP_InputField answerInputField;
     [SerializeField] private int answer;
@@ -47,6 +48,9 @@ public class QuestionManager : MonoBehaviour
     {
         if (answerInputField.text == answer.ToString())
         {
+            monsterManager.KillMonster(0);
+            monsterManager.MonsterAttack(0);
+            monsterManager.MoveNextMonsterToQueue();
             GenerateQuestions();
         }
         else

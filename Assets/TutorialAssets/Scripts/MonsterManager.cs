@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TutorialAssets.Scripts;
 using UnityEngine;
 
 public class MonsterManager : MonoBehaviour
 {
     [SerializeField] private int amountOfMonsters=10;
     [SerializeField] Transform monsterSpawnPoint;
+    [SerializeField] Transform attackPoint;
+    [SerializeField] Transform queuePoint;
     [SerializeField] private GameObject[]  monsterPrefabs;
     [SerializeField] private float waveDifficulty = 0; //determines the difficulty
 
@@ -17,12 +20,52 @@ public class MonsterManager : MonoBehaviour
         //intantiating monsters
         for (int i=0; i< amountOfMonsters; i++)
         {
-            int monsterIndex = Random.Range(0, monsterPrefabs.Length);
-           GameObject monster = Instantiate(monsterPrefabs[monsterIndex],monsterSpawnPoint.position, monsterSpawnPoint.rotation);
-            monsters.Add(monster);
-         }
+            InstantiateMonsters();
+        }
+
+        MonsterAttack(0);
+        MoveNextMonsterToQueue();
 
         CalculateDifficulty(ref waveDifficulty);
+    }
+
+    private void InstantiateMonsters()
+    {
+        int monsterIndex = Random.Range(0, monsterPrefabs.Length);
+        GameObject monster = Instantiate(monsterPrefabs[monsterIndex], monsterSpawnPoint.position, monsterSpawnPoint.rotation);
+        monsters.Add(monster);
+    }
+
+    public void MonsterAttack(int monsterIndex)
+    {
+        if (monsters.Count <= monsterIndex) return;
+
+        Transform monster = monsters[monsterIndex].transform;
+        monster.GetComponent<MonsterController>().ChangeState(MonsterState.Attack);
+        monster.position = attackPoint.position;
+        monster.rotation = attackPoint.rotation;
+    }
+
+    public void MoveMonsterToQueue(int monsterIndex)
+    {
+        if (monsters.Count <= monsterIndex) return;
+
+        Transform monster = monsters[monsterIndex].transform;
+        monster.GetComponent<MonsterController>().ChangeState(MonsterState.Queue);
+        monster.position = queuePoint.position;
+        monster.rotation = queuePoint.rotation;
+    }
+
+    public void MoveNextMonsterToQueue()
+    {
+        MoveMonsterToQueue(1);
+    }
+
+    //kills the monster that has been answered from the queue as well as from the list of monsters too.
+    public void KillMonster(int monsterIndex)
+    {
+        Destroy(monsters[monsterIndex]);
+        monsters.RemoveAt(monsterIndex);
     }
 
     //ref can be useful if dealing with large collections while copying them into memory. ref allows to reference the memory and not copy.
