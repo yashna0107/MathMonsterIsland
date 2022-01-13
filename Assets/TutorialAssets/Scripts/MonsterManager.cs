@@ -1,7 +1,11 @@
+using Monsters;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TutorialAssets.Scripts;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class MonsterManager : MonoBehaviour
 {
@@ -15,7 +19,7 @@ public class MonsterManager : MonoBehaviour
     public List<GameObject> monsters;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //intantiating monsters
         for (int i=0; i< amountOfMonsters; i++)
@@ -27,6 +31,16 @@ public class MonsterManager : MonoBehaviour
         MoveNextMonsterToQueue();
 
         CalculateDifficulty(ref waveDifficulty);
+
+        Vector3? pos = GetMonsterPosition(typeof(AddSubtractMonster));
+        if(pos.HasValue)
+        {
+            Debug.Log($"Found monster type  at {pos}");
+        }
+        else
+        {
+            Debug.Log($"Didn't find monster.");
+        }
     }
 
     private void InstantiateMonsters()
@@ -82,5 +96,17 @@ public class MonsterManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    Vector3? GetMonsterPosition(Type type)
+    {
+        foreach(GameObject monster in monsters)
+        {
+            if(monster.GetComponent<MonsterController>().GetType() == type)
+            {
+                return monster.transform.position;
+            }
+        }
+        return null;
     }
 }

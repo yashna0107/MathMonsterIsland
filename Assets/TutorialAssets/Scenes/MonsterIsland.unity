@@ -5219,7 +5219,7 @@ MonoBehaviour:
   monsterManager: {fileID: 1906112019}
   messageBoxTextField: {fileID: 978072740}
   answerInputField: {fileID: 803896320}
-  answer: 0
+  answer: 
 --- !u!4 &1906112018
 Transform:
   m_ObjectHideFlags: 0

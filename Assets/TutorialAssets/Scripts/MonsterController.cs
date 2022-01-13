@@ -11,7 +11,7 @@ namespace TutorialAssets.Scripts
         Queue = 1,
         Attack = 2,
     }
-    public class MonsterController : MonoBehaviour
+    public abstract class MonsterController : MonoBehaviour
     {
         [SerializeField] private MonsterState _state;
         [SerializeField] private float _findNewPositionEvery = 2f;
@@ -74,5 +74,8 @@ namespace TutorialAssets.Scripts
             var newPos = new Vector3(Random.Range(-_maxMoveDistance, _maxMoveDistance), 0, Random.Range(-_maxMoveDistance, _maxMoveDistance));
             _agent.SetDestination(transform.position + newPos);
         }
+
+        
+
     }
 }
