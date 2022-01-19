@@ -23,6 +23,8 @@ public class QuestionManager : MonoBehaviour
 
         messageBoxTextField.text = qA.question;
         answer = qA.answer;
+
+
         ClearInputField();
     }
 

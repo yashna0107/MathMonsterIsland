@@ -7,6 +7,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
+
 public class MonsterManager : MonoBehaviour
 {
     [SerializeField] private int amountOfMonsters=10;
@@ -21,6 +22,19 @@ public class MonsterManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
+        try
+        {
+            for (int i = 0; i<amountOfMonsters; i++)
+            {
+                InstantiateMonsters();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Couldn't spawn monsters. Check {gameObject.name} for missing prefabs in the monster prefabs array " +
+                $"OR check spawn point assigned properly.  { e.Message}");
+        }
         //intantiating monsters
         for (int i=0; i< amountOfMonsters; i++)
         {
@@ -56,8 +70,8 @@ public class MonsterManager : MonoBehaviour
 
         Transform monster = monsters[monsterIndex].transform;
         monster.GetComponent<MonsterController>().ChangeState(MonsterState.Attack);
-        monster.position = attackPoint.position;
-        monster.rotation = attackPoint.rotation;
+
+        StartCoroutine(LerpToPosition(monster, attackPoint.position,attackPoint.rotation, 0.5f));
     }
 
     public void MoveMonsterToQueue(int monsterIndex)
@@ -66,8 +80,8 @@ public class MonsterManager : MonoBehaviour
 
         Transform monster = monsters[monsterIndex].transform;
         monster.GetComponent<MonsterController>().ChangeState(MonsterState.Queue);
-        monster.position = queuePoint.position;
-        monster.rotation = queuePoint.rotation;
+
+        StartCoroutine(LerpToPosition(monster, queuePoint.position, queuePoint.rotation, 0.3f));
     }
 
     public void MoveNextMonsterToQueue()
@@ -108,5 +122,21 @@ public class MonsterManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    IEnumerator LerpToPosition(Transform objectTransform, Vector3 position, Quaternion rotation, float speed)
+    {
+        float distToPos = Vector3.Distance(objectTransform.position, position);
+        float timer = 0;
+        while(distToPos > 0.1f)
+        {
+            distToPos = Vector3.Distance(objectTransform.position, position);
+
+            objectTransform.position = Vector3.Lerp(objectTransform.position, position, timer*speed);
+            objectTransform.rotation = rotation;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 }
