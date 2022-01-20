@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TutorialAssets.Scripts;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 
@@ -18,6 +19,8 @@ public class MonsterManager : MonoBehaviour
     [SerializeField] private float waveDifficulty = 0; //determines the difficulty
 
     public List<GameObject> monsters;
+
+    public UnityEvent onMonsterKilled;
 
     // Start is called before the first frame update
     void Awake()
@@ -92,6 +95,7 @@ public class MonsterManager : MonoBehaviour
     //kills the monster that has been answered from the queue as well as from the list of monsters too.
     public void KillMonster(int monsterIndex)
     {
+        onMonsterKilled.Invoke();
         Destroy(monsters[monsterIndex]);
         monsters.RemoveAt(monsterIndex);
     }

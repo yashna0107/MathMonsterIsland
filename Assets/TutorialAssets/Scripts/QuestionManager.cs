@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,24 +9,38 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] MonsterManager monsterManager;
    [SerializeField] private TMP_Text messageBoxTextField;
     [SerializeField] TMP_InputField answerInputField;
+
     [SerializeField] private string answer;
-    
+
+    //create Event
+    public event Action OnGameWin;
 
     // Start is called before the first frame update
     void Start()
     {
+
         GenerateQuestions();
+
+        OnGameWin += () =>
+        {
+            answerInputField.text = "You've cleared the wave.";
+            messageBoxTextField.text = "Well done! Wave Cleared.";
+        };
     }
 
     void GenerateQuestions()
     {
-        QuestionAnswer qA = monsterManager.monsters[0].GetComponent<IQuestion>().GenerateQuestion();
+        if(monsterManager.monsters.Count == 0)
+        {
+            OnGameWin?.Invoke(); //inline nullcheck
+            return;
+        }
 
+        QuestionAnswer qA = monsterManager.monsters[0].GetComponent<IQuestion>().GenerateQuestion();
         messageBoxTextField.text = qA.question;
         answer = qA.answer;
 
-
-        ClearInputField();
+        ClearInputField("Enter your answer: ");
     }
 
     public void ValidateAnswer()
@@ -39,19 +54,14 @@ public class QuestionManager : MonoBehaviour
         }
         else
         {
-            ClearInputField();
+            ClearInputField(" Please Try Again!");
         }
     }
 
-    void ClearInputField()
+    void ClearInputField(string inputFieldPlaceHolder = "")
     {
-        answerInputField.text = "";
+        answerInputField.text = inputFieldPlaceHolder;
         answerInputField.ActivateInputField();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
